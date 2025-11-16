@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Next Play</title>
+
+    <!-- Bootstrap CSS first -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Your custom CSS after Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Your Next Play</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                </form>
+                <a href="#" class="me-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                         alt="profile" class="rounded-circle" width="40">
+                </a>
+                <a href="/login">
+                    <button class="btn btn-danger">Log in</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="body-content text-center mt-4">
+        <p>Ready to find your perfect story game? What are you waiting for, let's go!</p>
+    </div>
+
+    <div class="quiz-rectangle text-center" id="quizBox">
+        <button id="startQuizBtn" class="btn btn-danger">Start Quiz</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <script>
+    // Start quiz button
+    document.getElementById('startQuizBtn').onclick = function() {
+        document.getElementById('quizBox').innerHTML = `
+           <form id="deviceForm">
+                <p style="color:#e75480;font-weight:bold;">What device can you play on? (Select all that apply)</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="device" value="PC" id="devicePC">
+                    <label class="form-check-label" for="devicePC">PC</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="device" value="Mobile" id="deviceMobile">
+                    <label class="form-check-label" for="deviceMobile">Mobile</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="device" value="Console" id="deviceConsole">
+                    <label class="form-check-label" for="deviceConsole">Console</label>
+                </div>
+                <button type="submit" class="btn btn-danger mt-3">Next</button>
+           </form>
+        `;
+    };
+
+    // Handle form submissions
+    document.addEventListener('submit', function(e) {
+        // Device form
+        if (e.target && e.target.id === 'deviceForm') {
+            e.preventDefault();
+            document.getElementById('quizBox').innerHTML = `
+                <form id="durationForm">
+                    <p style="color:#e75480;font-weight:bold;">How long do you want to play for?</p>
+                    <div class="row g-3 justify-content-center">
+                        <div class="col-6">
+                            <label class="duration-option w-100">
+                                <input type="radio" name="duration" value="less than 1 hour" required>
+                                <span>Less than 1 hour</span>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label class="duration-option w-100">
+                                <input type="radio" name="duration" value="1-2 hours">
+                                <span>1-2 hours</span>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label class="duration-option w-100">
+                                <input type="radio" name="duration" value="2-4 hours">
+                                <span>2-4 hours</span>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label class="duration-option w-100">
+                                <input type="radio" name="duration" value="5 hours or more">
+                                <span>5 hours or more</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger mt-4">Finish</button>
+                </form>
+            `;
+        }
+
+        // Duration form -> redirect to result page
+        if (e.target && e.target.id === 'durationForm') {
+            e.preventDefault();
+            const duration = document.querySelector('input[name="duration"]:checked').value;
+
+            // Example redirects — you can change these to real result pages
+            if (duration === "less than 1 hour") {
+                window.location.href = "/result1.html";
+            } else if (duration === "1-2 hours") {
+                window.location.href = "/result2.html";
+            } else if (duration === "2-4 hours") {
+                window.location.href = "/result3.html";
+            } else {
+                window.location.href = "/result4.html";
+            }
+        }
+    });
+    </script>
+</body>
+</html>

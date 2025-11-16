@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+<style>
+    body {
+        background: #ffe4f1;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .register-container {
+        max-width: 350px;
+        margin: 60px auto;
+        background: #2d1a22;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(255, 105, 180, 0.12);
+        padding: 2rem 2.5rem;
+        text-align: center;
+    }
+    h2 {
+        color: #e75480;
+        font-size: 1.7rem;
+        margin-bottom: 1.2rem;
+        font-weight: 700;
+    }
+    label {
+        color: #e75480;
+        font-weight: 600;
+        margin-top: 1rem;
+        display: block;
+        text-align: left;
+    }
+    input[type="text"], input[type="password"], input[type="email"] {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        margin: 0.5rem 0 1rem 0;
+        border: 1px solid #ffb6d5;
+        border-radius: 8px;
+        font-size: 1rem;
+        background: #fff0f6;
+        color: #2d1a22;
+    }
+    button {
+        padding: 0.6rem 1.5rem;
+        background: #ff69b4;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(255, 105, 180, 0.15);
+        transition: background 0.2s;
+    }
+    button:hover {
+        background: #e75480;
+    }
+    .login-link {
+        margin-top: 1.2rem;
+        background: #2d1a22;
+        color: #e75480;
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(231, 84, 128, 0.08);
+    }
+    .login-link a {
+        color: #ff69b4;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+</style>
+<div class="register-container">
+    <h2>Register</h2>
+    <form method="post">
+        <label>Username</label>
+        <input name="username" type="text" required>
+        <label>Password</label>
+        <input name="password" type="password" minlength="6" placeholder="At least 6 characters" required>
+        <label>Email</label>
+        <input name="email" type="email" required>
+        <button type="submit">Register</button>
+    </form>
+    <div class="login-link">
+        Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+    </div>
+</div>
+{% endblock %}
