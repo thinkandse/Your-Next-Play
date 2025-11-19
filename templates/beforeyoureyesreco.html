@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Next Play</title>
+
+    <!-- Bootstrap CSS first -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Your custom CSS after Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+
+</head>
+<body > <!--style="background-color: lightblue;" -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Your Next Play</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Play List</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
+                </form>
+                <a href="#" class="me-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                         alt="profile" class="rounded-circle" width="40">
+                </a>
+                <a href="/login">
+                    <button class="btn btn-danger">Log in</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+<br>
+<br>
+<br>
+
+<div class="quiz-rectangle d-flex flex-column align-items-center justify-content-center" id="quizBox">
+    <div class="game-info w-100 d-flex flex-column justify-content-center align-items-center">
+        <div class="w-100 text-center">
+            <span class="d-block w-100 text-center" >Your recommended game is:</span>
+            <p class="w-100 text-center" style="color: #3553ef; font-weight: bold; margin-bottom: 1.2rem; ">Before Your Eyes!</p>
+        </div>
+        <div class="game-img-container d-flex justify-content-center w-100 mb-3">
+            <a href="https://www.beforeyoureyesgame.com/#about" target="_blank" rel="noopener">
+                <img src="https://media.vgm.io/releases/02/22020/22020-1700166122.jpg"
+                     alt="Before Your Eyes"
+                     class="game-image" style="width:150px;height:150px;border-radius:20px;object-fit:cover;display:block;margin:auto;" >
+            </a>
+        </div>
+        <div class="d-flex w-100 justify-content-center mt-4">
+            <div class="d-flex flex-row justify-content-center align-items-center" style="width:290px; gap: 1.2rem;">
+                <form action="{{ url_for('add_to_playlist', game_id='beforeyoureyes') }}" method="POST" style="flex:1; min-width:0;">
+                    <button type="submit" class="btn btn-danger rounded-pill w-100" style="white-space:nowrap;">Add to Play List</button>
+                </form>
+                <a href="{{ url_for('beforeyoureyes') }}" style="flex:1; min-width:0; text-decoration:none;">
+                    <button type="button" class="btn btn-outline-primary rounded-pill w-100" style="white-space:nowrap;">Check Game Info</button>
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
+</html>
