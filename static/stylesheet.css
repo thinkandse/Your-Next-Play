@@ -203,3 +203,22 @@ body {
     border-radius: 18px !important;
     font-weight: 600;
 }
+
+/* Keep buttons identical in size and font */
+.game-buttons-wrapper {
+  display: flex;
+  gap: 1.2rem;
+  width: 320px;
+  max-width: 90%;
+}
+
+.game-btn {
+  font-size: 1rem !important;      /* normalise font size */
+  padding: 0.45rem 1.2rem !important;
+  border-width: 2px !important;
+  height: 45px;                    /* force identical height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}

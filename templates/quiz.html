@@ -1,4 +1,4 @@
-<!-- fix the paths from quiz ASAP -->
+<!-- everything works but edith finch is broken! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +7,11 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Your custom CSS after Bootstrap -->
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
-
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
@@ -24,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/quiz">Quiz</a></li>
                     <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
                     <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
                 </ul>
@@ -35,9 +34,7 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
                          alt="profile" class="rounded-circle" width="40">
                 </a>
-                <a href="/login">
-                    <button class="btn btn-danger">Log in</button>
-                </a>
+                <a href="/login"><button class="btn btn-danger">Log in</button></a>
             </div>
         </div>
     </nav>
@@ -55,16 +52,8 @@
             crossorigin="anonymous"></script>
 
 <script>
-/*
-  Backend rewrite:
-  - enforces free vs paid split (free => only Sever/Expedition)
-  - Omori: vibe sad OR impactful (vibe value 'sad' or 'relatable')
-  - keeps front-end unchanged
-*/
-
 let quizAnswers = { device: [], duration: '', vibe: '', rating: '', money: '', interest: '' };
 
-// helpers
 function anyOf(arr, allowed) {
     return arr.some(a => allowed.includes(a));
 }
@@ -81,16 +70,13 @@ function loadQuestion(html) {
     document.getElementById('quizBox').innerHTML = html;
 }
 
-// question templates (same UI as before)
+// === QUESTIONS ===
 const deviceQuestion = `
 <form id="deviceForm">
     <p style="color:#e75480;font-weight:bold;">What device can you play on? (Select all that apply)</p>
-    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="PC" id="devicePC">
-        <label class="form-check-label" for="devicePC">PC</label></div>
-    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="Mobile" id="deviceMobile">
-        <label class="form-check-label" for="deviceMobile">Mobile</label></div>
-    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="Console" id="deviceConsole">
-        <label class="form-check-label" for="deviceConsole">Console</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="PC"> PC</div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="Mobile"> Mobile</div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="Console"> Console</div>
     <button type="submit" class="btn btn-danger mt-3">Next</button>
 </form>`;
 
@@ -142,206 +128,72 @@ const interestQuestion = `
     <button type="submit" class="btn btn-danger mt-3">Finish</button>
 </form>`;
 
-// start quiz
-document.getElementById('startQuizBtn').onclick = function() {
-    loadQuestion(deviceQuestion);
-};
+// Start quiz
+document.getElementById('startQuizBtn').onclick = () => loadQuestion(deviceQuestion);
 
-// route between questions and collect answers
-document.addEventListener('submit', function(e) {
+document.addEventListener('submit', e => {
     e.preventDefault();
-    if (e.target.id === 'deviceForm') {
-        quizAnswers.device = Array.from(document.querySelectorAll('input[name="device"]:checked')).map(cb => cb.value);
-        if (!quizAnswers.device || quizAnswers.device.length === 0) {
-            alert('Please select at least one device.');
-            return;
-        }
+    const f = e.target.id;
+    if (f === 'deviceForm') {
+        quizAnswers.device = Array.from(document.querySelectorAll('input[name="device"]:checked')).map(c => c.value);
+        if (quizAnswers.device.length === 0) return alert('Please select at least one device.');
         loadQuestion(durationQuestion);
-    } else if (e.target.id === 'durationForm') {
+    } else if (f === 'durationForm') {
         quizAnswers.duration = document.querySelector('input[name="duration"]:checked').value;
         loadQuestion(vibeQuestion);
-    } else if (e.target.id === 'vibeForm') {
+    } else if (f === 'vibeForm') {
         quizAnswers.vibe = document.querySelector('input[name="vibe"]:checked').value;
         loadQuestion(ratingQuestion);
-    } else if (e.target.id === 'ratingForm') {
+    } else if (f === 'ratingForm') {
         quizAnswers.rating = document.querySelector('input[name="rating"]:checked').value;
         loadQuestion(moneyQuestion);
-    } else if (e.target.id === 'moneyForm') {
+    } else if (f === 'moneyForm') {
         quizAnswers.money = document.querySelector('input[name="money"]:checked').value;
         loadQuestion(interestQuestion);
-    } else if (e.target.id === 'interestForm') {
+    } else if (f === 'interestForm') {
         quizAnswers.interest = document.querySelector('input[name="interest"]:checked').value;
         decideAndRedirect();
     }
 });
 
-// Decision engine with strict free/paid split
+// === MAIN LOGIC ===
 function decideAndRedirect() {
     const q = quizAnswers;
     const durIdx = durationIndex(q.duration);
 
-    // games definitions — constraints exactly as you specified
+    // Real-life control filter
+    if (q.interest === 'real life') {
+        if (q.money === 'No') { window.location.href = '/severreco'; return; }
+        else { window.location.href = '/beforeyoureyesreco'; return; }
+    }
+
     const games = {
-        sever: {
-            path: '/severreco',
-            devicesAllowed: ['PC','Mobile'],
-            durationMinIdx: 0,
-            vibeAllowed: ['quick slow burn','relatable','character matters'],
-            ratingAllowed: ['G','PG','M','MA'],
-            moneyRequired: 'No',
-            interestExclude: ['popular']
-        },
-        expedition: {
-            path: '/expeditionreco',
-            devicesAllowed: ['PC','Mobile'],
-            durationMinIdx: 0,
-            vibeAllowed: ['relatable','quick slow burn'],
-            ratingAllowed: ['G','PG','M','MA'],
-            moneyRequired: 'No',
-            interestInclude: ['easy','sit down']
-        },
-        edith: {
-            path: '/edithfinchreco',
-            devicesAllowed: ['PC','Mobile','Console'],
-            durationMinIdx: 1, // not less than 1 hour
-            vibeAllowed: ['sad','relatable'],
-            ratingAllowed: ['M','MA'],
-            moneyRequired: 'Yes',
-            interestExclude: ['real life']
-        },
-        firewatch: {
-            path: '/firewatchreco',
-            devicesAllowed: ['PC','Console'],
-            durationMinIdx: 3, // 5+ hours
-            vibeAllowed: ['character matters'],
-            ratingAllowed: ['M','MA'],
-            moneyRequired: 'Yes',
-            interestExclude: ['real life']
-        },
-        omori: {
-            path: '/omorireco',
-            devicesAllowed: ['PC','Console'],
-            durationMinIdx: 3, // 5+ hours
-            vibeAllowed: ['sad','relatable'], // sad OR impactful
-            ratingAllowed: ['MA'],
-            moneyRequired: 'Yes',
-            interestInclude: ['popular','sit down'] // either/or
-        },
-        beforeyoureyes: {
-            path: '/beforeyoureyesreco',
-            devicesAllowed: ['PC','Mobile'],
-            durationMinIdx: 2, // 2+ hours
-            vibeAllowed: ['sad','relatable'],
-            ratingAllowed: ['G','PG'],
-            moneyRequired: 'Yes',
-            interestExclude: ['popular']
-        }
+        sever: { path:'/severreco', dur:[0,1], vibe:['quick slow burn','relatable'], rating:['G','PG','M','MA'], money:'No' },
+        expedition: { path:'/expeditionreco', dur:[0,1], vibe:['relatable','quick slow burn'], rating:['G','PG','M'], money:'No' },
+        beforeyoureyes: { path:'/beforeyoureyesreco', dur:[1,2], vibe:['sad','relatable'], rating:['G','PG'], money:'Yes' },
+        edith: { path:'/edithfinchreco', dur:[1,2], vibe:['sad','relatable'], rating:['M','MA'], money:'Yes' },
+        firewatch: { path:'/firewatchreco', dur:[2,3], vibe:['character matters','relatable'], rating:['M','MA'], money:'Yes' },
+        omori: { path:'/omorireco', dur:[3], vibe:['sad','relatable'], rating:['MA'], money:'Yes' }
     };
 
-    // If user selected free -> only allow free games (Sever, Expedition)
-    const candidateKeys = Object.keys(games).filter(k => {
-        const g = games[k];
-        if (q.money === 'No') {
-            return g.moneyRequired === 'No';
-        } else {
-            // paid user: allow paid OR free games (but still enforce other constraints)
-            return true;
-        }
+    let candidates = Object.entries(games).filter(([_, g]) => {
+        if (!g.dur.includes(durIdx)) return false;
+        if (!g.vibe.includes(q.vibe)) return false;
+        if (g.money === 'No' && q.money === 'Yes') return false;
+        if (g.money === 'Yes' && q.money === 'No') return false;
+        return true;
     });
 
-    // evaluate a game: returns score or -Infinity if fails hard constraints
-    function evaluate(g) {
-        // devices
-        if (!anyOf(q.device, g.devicesAllowed)) return Number.NEGATIVE_INFINITY;
-        // duration
-        if (durIdx < g.durationMinIdx) return Number.NEGATIVE_INFINITY;
-        // vibe
-        if (!g.vibeAllowed.includes(q.vibe)) return Number.NEGATIVE_INFINITY;
-        // rating
-        if (!g.ratingAllowed.includes(q.rating)) return Number.NEGATIVE_INFINITY;
-        // money
-        if (g.moneyRequired && q.money !== g.moneyRequired) return Number.NEGATIVE_INFINITY;
-        // interest exclude
-        if (g.interestExclude && g.interestExclude.includes(q.interest)) return Number.NEGATIVE_INFINITY;
-        // interest include
-        if (g.interestInclude && !g.interestInclude.includes(q.interest)) return Number.NEGATIVE_INFINITY;
+    const priority = ['beforeyoureyes','sever','expedition','edith','firewatch','omori'];
+    candidates.sort((a,b)=>priority.indexOf(a[0])-priority.indexOf(b[0]));
 
-        // passed all hard checks — compute simple score to prefer closer matches
-        let score = 0;
-        if (g.interestInclude && g.interestInclude.includes(q.interest)) score += 3;
-        if (g.interestExclude && !g.interestExclude.includes(q.interest)) score += 1;
-        if (g.vibeAllowed.includes(q.vibe)) score += 1;
-        if (g.durationMinIdx === durIdx) score += 1;
-        const allUserDevicesAllowed = q.device.every(d => g.devicesAllowed.includes(d));
-        if (allUserDevicesAllowed) score += 1;
-        return score;
-    }
+    if (candidates.length>0){ window.location.href=candidates[0][1].path; return; }
 
-    // build results
-    const results = [];
-    for (const k of candidateKeys) {
-        const s = evaluate(games[k]);
-        if (s > Number.NEGATIVE_INFINITY) results.push({ key: k, score: s, path: games[k].path });
-    }
-
-    // pick best result if any
-    if (results.length > 0) {
-        results.sort((a,b) => {
-            if (b.score !== a.score) return b.score - a.score;
-            // deterministic priority fallback
-            const priority = ['omori','firewatch','edith','expedition','sever','beforeyoureyes'];
-            return priority.indexOf(a.key) - priority.indexOf(b.key);
-        });
-        window.location.href = results[0].path;
-        return;
-    }
-
-    // No exact match — fallback logic
-
-    // If free user, guarantee Sever or Expedition
-    if (q.money === 'No') {
-        // prefer Expedition when interest = easy or sit down, otherwise Sever
-        if (q.interest === 'easy' || q.interest === 'sit down') {
-            window.location.href = '/expeditionreco';
-        } else {
-            window.location.href = '/severreco';
-        }
-        return;
-    }
-
-    // If paid user, try logical fallbacks in order
-    // 1) Omori (if MA and long & sad/relatable and platform ok)
-    if (q.rating === 'MA' && durIdx >= 3 && (q.vibe === 'sad' || q.vibe === 'relatable') && anyOf(q.device, ['PC','Console'])) {
-        window.location.href = '/omorireco';
-        return;
-    }
-    // 2) Firewatch (long slow burn on PC/Console, M+)
-    if (durIdx >= 3 && q.vibe === 'character matters' && anyOf(q.device, ['PC','Console']) && (q.rating === 'M' || q.rating === 'MA')) {
-        window.location.href = '/firewatchreco';
-        return;
-    }
-    // 3) Edith Finch (if not real-life and rating M/MA or vibe sad/relatable)
-    if (q.interest !== 'real life' && (q.rating === 'M' || q.rating === 'MA' || q.vibe === 'relatable' || q.vibe === 'sad')) {
-        // require duration >= 1
-        if (durIdx >= 1) {
-            window.location.href = '/edithfinchreco';
-            return;
-        }
-    }
-    // 4) Before Your Eyes (PG/G, 2+ hours, real-life interest preferred)
-    if ((q.rating === 'G' || q.rating === 'PG') && durIdx >= 2 && anyOf(q.device, ['PC','Mobile'])) {
-        if (q.interest !== 'popular') {
-            window.location.href = '/beforeyoureyesreco';
-            return;
-        }
-    }
-    // 5) Expedition (paid fallback allowed)
-    if (anyOf(q.device, ['PC','Mobile']) && (q.vibe === 'relatable' || q.vibe === 'quick slow burn')) {
-        window.location.href = '/expeditionreco';
-        return;
-    }
-    // 6) Sever as final fallback
-    window.location.href = '/severreco';
+    // Fallbacks
+    if (q.money==='No'){ window.location.href=(q.interest==='easy'||q.interest==='sit down')?'/expeditionreco':'/severreco'; return;}
+    if (durIdx===3){ window.location.href='/omorireco'; return; }
+    if (durIdx>=2){ window.location.href='/firewatchreco'; return; }
+    window.location.href='/edithfinchreco';
 }
 </script>
 </body>

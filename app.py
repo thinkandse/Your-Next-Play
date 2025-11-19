@@ -147,58 +147,61 @@ def playlist():
 
     db = get_db_connection()
     cursor = db.cursor()
+
+    # Get the current user ID
     cursor.execute('SELECT id FROM users WHERE username = ?', (session['username'],))
     user = cursor.fetchone()
-
     if not user:
         db.close()
         flash('User not found.', 'error')
         return redirect(url_for('index'))
 
-    cursor.execute('SELECT * FROM playlist WHERE user_id = ?', (user['id'],))
+    user_id = user['id']
+
+    # Fetch games from playlist
+    cursor.execute('SELECT * FROM playlist WHERE user_id = ?', (user_id,))
     games = cursor.fetchall()
     db.close()
 
     return render_template('playlist.html', games=games)
 
 
-
-@app.route('/add_to_playlist/<game_id>', methods=['POST'])
+@app.route('/_playlist/<game_id>', methods=['POST'])
 def add_to_playlist(game_id):
     if 'username' not in session:
         flash('Please log in to add games to your playlist.', 'error')
         return redirect(url_for('login'))
 
-    # Example game data (expand later)
+    # Your game database
     game_db = {
         'beforeyoureyes': {
             'name': 'Before Your Eyes',
-            'img': 'https://media.vgm.io/releases/02/22020/22020-1700166122.jpg',
+            'img': 'https://i.ytimg.com/vi/hN2aqi5MhXo/maxresdefault.jpg',
             'link': 'https://www.beforeyoureyesgame.com/#about'
         },
         'sever': {
             'name': 'Sever',
-            'img': 'https://img.itch.zone/aW1nLzE0MTM4OTI4LnBuZw==/315x250%23c/tgIUrp.png',
-            'link': 'https://shubshub.itch.io/sever'
+            'img': 'https://tr.rbxcdn.com/180DAY-733439886b2d74c27ea4f13e2e490640/768/432/Image/Webp/noFilter',
+            'link': 'https://www.roblox.com/games/80643569017414/Sever'
         },
         'expedition': {
             'name': 'Expedition',
-            'img': 'https://img.itch.zone/aW1nLzEzOTI5MzA3LnBuZw==/315x250%23c/F4wffk.png',
-            'link': 'https://amberdrift.itch.io/expedition'
+            'img': 'https://tr.rbxcdn.com/180DAY-bf16625d0900c55a5242eaa06c4e6d6e/768/432/Image/Webp/noFilter',
+            'link': 'https://www.roblox.com/games/14396787128/EXPEDITION'
         },
         'firewatch': {
             'name': 'Firewatch',
-            'img': 'https://upload.wikimedia.org/wikipedia/en/0/08/Firewatch_cover.jpg',
+            'img': 'https://tse2.mm.bing.net/th/id/OIP.kpGJcQ6g7rjGZStdmTPz8AHaEK?rs=1&pid=ImgDetMain&o=7&rm=3',
             'link': 'https://www.firewatchgame.com/'
         },
         'edithfinch': {
             'name': 'What Remains of Edith Finch',
-            'img': 'https://upload.wikimedia.org/wikipedia/en/9/9d/What_Remains_of_Edith_Finch_cover_art.jpg',
-            'link': 'https://www.giantsparrow.com/games/finch/'
+            'img': 'https://tse2.mm.bing.net/th/id/OIP.tVSU5Znmq1w8wGrWp0Po8QHaEK?rs=1&pid=ImgDetMain&o=7&rm=3',
+            'link': 'https://www.annapurna.com/interactive/what-remains-of-edith-finch'
         },
         'omori': {
             'name': 'Omori',
-            'img': 'https://upload.wikimedia.org/wikipedia/en/6/63/Omori_cover.jpg',
+            'img': 'https://artfiles.alphacoders.com/140/140072.jpg',
             'link': 'https://omori-game.com/en'
         }
     }
@@ -211,17 +214,17 @@ def add_to_playlist(game_id):
     db = get_db_connection()
     cursor = db.cursor()
 
-    # Find user ID
+    # Get user ID
     cursor.execute('SELECT id FROM users WHERE username = ?', (session['username'],))
     user = cursor.fetchone()
     if not user:
-        flash('User not found.', 'error')
         db.close()
+        flash('User not found.', 'error')
         return redirect(url_for('playlist'))
 
     user_id = user['id']
 
-    # Check if already in playlist
+    # Check if game already in playlist
     cursor.execute('SELECT * FROM playlist WHERE user_id = ? AND game_id = ?', (user_id, game_id))
     existing = cursor.fetchone()
 
@@ -236,6 +239,34 @@ def add_to_playlist(game_id):
         flash(f"Added {game['name']} to your play list!", 'success')
 
     db.close()
+    return redirect(url_for('playlist'))
+
+
+@app.route('/remove_from_playlist/<game_id>', methods=['POST'])
+def remove_from_playlist(game_id):
+    if 'username' not in session:
+        flash('Please log in to modify your playlist.', 'error')
+        return redirect(url_for('login'))
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    # Get user ID
+    cursor.execute('SELECT id FROM users WHERE username = ?', (session['username'],))
+    user = cursor.fetchone()
+    if not user:
+        db.close()
+        flash('User not found.', 'error')
+        return redirect(url_for('playlist'))
+
+    user_id = user['id']
+
+    # Delete the selected game for that user
+    cursor.execute('DELETE FROM playlist WHERE user_id = ? AND game_id = ?', (user_id, game_id))
+    db.commit()
+    db.close()
+
+    flash('Game removed from your play list.', 'info')
     return redirect(url_for('playlist'))
 
 
