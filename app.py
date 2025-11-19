@@ -63,6 +63,9 @@ def beforeyoureyesreco():
 @app.route('/omorireco')
 def omorireco():
     return render_template('omorireco.html')
+@app.route('/games')
+def games():
+   return render_template('games.html')
 @app.route('/quiz', methods=['GET', 'POST'])
 
 def quiz():
@@ -89,6 +92,7 @@ def register():
         db = get_db_connection()
         cursor = db.cursor()
         cursor.execute('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', (username, password, email))
+        db.commit()
         db.commit()
         db.close()
         flash('You have successfully registered.')
@@ -172,7 +176,7 @@ def add_to_playlist(game_id):
         flash('Please log in to add games to your playlist.', 'error')
         return redirect(url_for('login'))
 
-    # Your game database
+    #game database
     game_db = {
         'beforeyoureyes': {
             'name': 'Before Your Eyes',

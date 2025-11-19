@@ -2,9 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>Your Next Play</title>
 
+    <!-- Bootstrap CSS first -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Your custom CSS after Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+
+    <!-- Added styles for game info layout -->
+    <style>
+        /* Omori-only page background */
+        body.omori-bg {
+            background: url('https://tse4.mm.bing.net/th/id/OIP.RHSbDyOjvTzg2Dpq9DEGsQHaEK?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .game-info-box {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .game-info-box img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .game-details {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .game-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-item {
+            margin-bottom: 8px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .title-decor {
+            color: #000000;
+            width: 200px;
+            height: 100px;
+            margin-left: -50px;
+        }
+        .section h3 {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+          .game-info-box, .section {
+    color: #000;}
+    </style>
+
+</head>
+<body class="omori-bg">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Your Next Play</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
+                </form>
+                <a href="#" class="me-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                         alt="profile" class="rounded-circle" width="40">
+                </a>
+                <a href="/login">
+                    <button class="btn btn-danger">Log in</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ADDED CONTENT BELOW -->
+    <div class="game-info-box">
+        <img src="https://keystonekeynote.com/wp-content/uploads/2023/03/omori-gang.png" alt="Game Cover">
+        <div class="game-details">
+            <div class="title-decor"><img src="../static/Fonts/omori title.png" height="805" width="1724"/></div>
+            <div class="detail-item"><strong>Age Rating:</strong> MA 15+</div>
+            <div class="detail-item"><strong>Devices:</strong> Pc, Console</div>
+            <div class="detail-item"><strong>Cost:</strong> $19.99</div>
+            <div class="detail-item"><strong>Release Date:</strong> December 25, 2020</div>
+            <div class="detail-item"><strong>Developer:</strong> OMOCAT</div>
+            <div class="detail-item"><strong>Trailer:</strong> <a href="https://www.youtube.com/watch?v=erzgjfU271g" target="_blank"> Omori Traler (Youtube)</a></div>
+            <div class="detail-item"><strong>More Info:</strong> <a href="https://www.omori-game.com/" target="_blank">Game Link</a></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Game Description</h3>
+        <p>Explore a strange world full of colorful friends and foes. Navigate through the vibrant and the mundane in order to uncover a forgotten past.
+<br><br>
+When the time comes, the path you’ve chosen will determine your fate... and perhaps the fate of others as well.
+
+</p>
+    </div>
+
+    <div class="section">
+        <h3>Game Tips</h3>
+        <p>1. Have questions, but don't try to answer them. <br>
+        &emsp; - Omori, especially at the start, is very dream-like and surreal. You'll have questions about the world, characters, and plot. Don't try to answer
+            &emsp; them right away; instead, focus on experiencing the game and its atmosphere. The answers will come in time as you progress through the story.<br><br>
+        2. Save often and in multiple slots. <br>
+        &emsp; - Omori features multiple endings, if you want to experience those endings without restarting, get multiple save files. Save files are also good
+            &emsp; for peace of mind in case you make a choice you regret or want to explore different paths.<br><br>
+        3. Be curious. <br>
+        &emsp; - The game is filled with secrets, hidden areas, and side quests. Omori loves to reward players who explore and interact with the world beyond the
+            &emsp; main storyline. Talk to NPCs, investigate objects, and try different actions to uncover all the game has to offer.
+            <br><br>4. Use emotions wisely. <br>
+        &emsp; - The emotion system is a key gameplay mechanic in Omori. Different emotions affect your battle and can be the difference between winning and
+            &emsp; losing, especially with harder bosses. Learn how each emotion works and strategize accordingly during battles. <br><br>
+            5. Take a break if you need to. <br>
+        &emsp; - Omori can be emotionally intense at times, especially towards the end. If you find yourself feeling overwhelmed, it's okay to take a break and
+            &emsp; come back later with a fresh perspective.
+           <br><br> 6. Play in chunks of about 2-3 hours. <br>
+            &emsp; - You don't want to burn yourself out on Omori, as it is a game that thrives on atmosphere and emotional engagement. Playing in shorter <br>&emsp;
+            sessions allows you to absorb the story and world better without feeling fatigued. You also don't want to jump in for a short session, as you won't
+            &emsp; experience much emotional impacts.
+        </p>
+    </div>
+<div class="section">
+        <h3>What I love about Omori</h3>
+        <p>The Characters... I LOVE the characters so much! Their witty dialogue and cute personalities are so fun and match the lore so well!
+        I don't have an issue with any character honestly, especially the main ones.<br><br>
+        I also love the cute art of the game, the pixel style is just to die for... There's two main art styles in Omori, the pixel style where most of the world is set, and cutscene/character style, which has a more pencil and hand drawn feel. The pixel art style is honestly so easy on the eyes.
+        <br><br> Lastly, the story. I love the story so much. The dream world doesn't take away from the story world at all, it's a fun way to look at the characters after the real world. The story is emotional, nostalgic, and heartwarming. Definitely a must play for anyone who loves story driven games.
+        </p>
+    </div>
+
+    <div class="section">
+        <h3>Parents' Guide</h3>
+        <p>This game Omori, has topics of suicide, depression, and anxiety, it literally warns you every time you open the game. I would recommend for anyone 15+</p>
+    </div>
+    <!-- END OF ADDED CONTENT -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 </body>
 </html>

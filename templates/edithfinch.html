@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Next Play</title>
+
+    <!-- Bootstrap CSS first -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Your custom CSS after Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+
+    <!-- Added styles for game info layout -->
+    <style>
+        .game-info-box {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+
+        .game-info-box img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .game-details {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .game-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-item {
+            margin-bottom: 8px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .title-decor {
+            color: #f4eddf;
+        }
+        .section h3 {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+          .game-info-box, .section {
+    color: #000;}
+    </style>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Your Next Play</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
+                </form>
+                <a href="#" class="me-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                         alt="profile" class="rounded-circle" width="40">
+                </a>
+                <a href="/login">
+                    <button class="btn btn-danger">Log in</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ADDED CONTENT BELOW -->
+    <div class="game-info-box">
+        <img src="https://tse3.mm.bing.net/th/id/OIP.QAJ-QsrNUdch0Nz44FiZkgHaHa?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Game Cover">
+        <div class="game-details">
+            <div class="title-decor"> <h2>What Remains of Edith Finch</h2></div>
+            <div class="detail-item"><strong>Age Rating:</strong> 13+</div>
+            <div class="detail-item"><strong>Devices:</strong> Pc, Console, Mobile (iOS)</div>
+            <div class="detail-item"><strong>Cost:</strong> $19.99 (not discounted), $4.99 (discounted)</div>
+            <div class="detail-item"><strong>Release Date:</strong> April 25, 2017</div>
+            <div class="detail-item"><strong>Developer:</strong> Giant Sparrow</div>
+            <div class="detail-item"><strong>Trailer:</strong> <a href="https://www.youtube.com/watch?v=S0kKF5f8nS0" target="_blank"> What Remains of Edith Finch Trailer (Youtube)</a></div>
+            <div class="detail-item"><strong>More Info:</strong> <a href="https://www.annapurna.com/interactive/what-remains-of-edith-finch" target="_blank">Game Link</a></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Game Description</h3>
+        <p>A collection of strange tales about a family in Washington state.
+<br><br>
+As Edith, you’ll explore the colossal Finch house, searching for
+            stories as she explores her family history and tries to figure out why she’s
+            the last one in her family left alive. Each story you find lets you experience the
+            life of a new family member on the day of their death, with stories ranging from the
+            distant past to the present day.</p>
+    </div>
+
+    <div class="section">
+        <h3>Game Tips</h3>
+        <p>1. Play in a dark setting <br>
+          &emsp; - There's nothing stopping you from playing in a dark setting, so that's what I recommend. It fuels the emotion in the game when you're in a<br> &emsp;
+            dark setting without distractions.
+            <br><br>
+            2. Use headphones <br>
+            &emsp; - The voice acting and ambience in the game is incredible. Using headphones just increases the immersion to Edith's voice and the world.
+            <br><br>
+            3. Go slow, and explore the world <br>
+            &emsp; - The game is meant for you to explore the house and the stories, don't try to rush to the next story, it ruins the current story you're on.
+            <br><br>
+            4. Use your imagination <br>
+            &emsp; - What Remains of Edith Finch is very metaphorical, so be prepared to walk away without a real answer, but an interpretive one, the game usually <br> &emsp;doesn't hand out answers.
+            <br><br>
+            5. Play in one sitting <br>
+            &emsp; - It ruins the emotional experience if you don't play it all in one sitting, it's only about 2-3 hours, so plan out a 2-3 hour block of time you have <br>
+            &emsp; and finish the game.
+        </p>
+    </div>
+
+    <div class="section">
+        <h3>What I love about What Remains of Edith Finch</h3>
+        <p>Edith Finch is a game that really makes you think, it uses metaphors and symbols to describe scenes. It's like a poem. The ending is super well done, tied up neatly with a nice bow. The atmosphere is also amazing, love the attention to detail with the world. Love the message that it brought to me, worth playing!</p>
+    </div>
+
+    <div class="section">
+        <h3>Parents' Guide</h3>
+        <p>Death is a massive part in this game, it is extremely confronting in the way death is viewed. Blood is also present in the game. Drugs are also referenced.</p>
+    </div>
+    <!-- END OF ADDED CONTENT -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
+</html>

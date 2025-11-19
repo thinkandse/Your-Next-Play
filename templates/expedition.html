@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Your Next Play</title>
+
     <!-- Bootstrap CSS first -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -10,8 +11,65 @@
     <!-- Your custom CSS after Bootstrap -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
 
+    <!-- Added styles for game info layout -->
+    <style>
+        .game-info-box {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .game-info-box img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .game-details {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .game-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-item {
+            margin-bottom: 8px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .title-decor {
+            color: #6125f8;
+        }
+        .section h3 {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+          .game-info-box, .section {
+    color: #000;}
+    </style>
+
 </head>
-<body > <!--style="background-color: lightblue;" -->
+<body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Your Next Play</a>
@@ -21,10 +79,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Games List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Play List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
                 </ul>
                 <form class="d-flex me-3">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
@@ -40,9 +98,59 @@
         </div>
     </nav>
 
+    <!-- ADDED CONTENT BELOW -->
+    <div class="game-info-box">
+        <img src="https://tr.rbxcdn.com/180DAY-6211a032c63d4fa06d31dc196cd5741e/512/512/Image/Webp/noFilter" alt="Game Cover">
+        <div class="game-details">
+            <div class="title-decor"> <h2>Expedition</h2></div>
+            <div class="detail-item"><strong>Age Rating:</strong> All Ages</div>
+            <div class="detail-item"><strong>Devices:</strong> Roblox (Mobile, PC, etc.)</div>
+            <div class="detail-item"><strong>Cost:</strong> Free</div>
+            <div class="detail-item"><strong>Release Date:</strong> August 12, 2023</div>
+            <div class="detail-item"><strong>Developer:</strong> hyuno_ooo</div>
+            <div class="detail-item"><strong>Trailer:</strong> N/A</div>
+            <div class="detail-item"><strong>More Info:</strong> <a href="https://www.roblox.com/games/14396787128/EXPEDITION" target="_blank">Game Link</a></div>
+        </div>
+    </div>
 
+    <div class="section">
+        <h3>Game Description</h3>
+        <p>I press my forehead to the window, <br>
+peering through the glass, <br>
+It feels like someone is there- <br>
+the shadowed reflection of my ugly, hidden thoughts. <br>
+<br>
+<br>
+"The Journey to Mental Adulthood"</p>
+    </div>
 
+    <div class="section">
+        <h3>Game Tips</h3>
+        <p>1. Get comfortable & play at night <br>
+        &emsp; - The game won't take too long, around an hour, so you only need to free 1 hour of your time in the evening for the greatest emotional
+            <br> &emsp; experience!
+            <br><br>
+        2. Pay attention to the story. <br>
+            &emsp; - This technically isn't a slow burn, but you'll miss key parts of the story if you don't pay enough attention, your connection with Ember is
+            <br> &emsp; important too!
+            <br><br>
+            3. Come back for the story! <br>
+            &emsp; - Hyuno is currently serving in the military, and he'll be back around October 2026 (estimation).
 
+        </p>
+    </div>
+
+    <div class="section">
+        <h3>What I love about Expedition</h3>
+        <p>I love the theme of this game, it's really relatable with a lovely message, I feel like this'll be very relatable to many people, the journey shows the pain instead of the highlights
+        the choice and fate in Expedition makes you feel powerless, yet still alive in the world.</p>
+    </div>
+
+    <div class="section">
+        <h3>Parents' Guide</h3>
+        <p>All ages, it has a very emotional and relatable theme, especially for teenagers, safe to say it's safe for anybody!</p>
+    </div>
+    <!-- END OF ADDED CONTENT -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

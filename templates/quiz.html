@@ -161,40 +161,95 @@ function decideAndRedirect() {
     const q = quizAnswers;
     const durIdx = durationIndex(q.duration);
 
-    // Real-life control filter
+    // === REAL-LIFE CONTROL GAMES ===
     if (q.interest === 'real life') {
         if (q.money === 'No') { window.location.href = '/severreco'; return; }
         else { window.location.href = '/beforeyoureyesreco'; return; }
     }
 
+    // === GAME DEFINITIONS ===
     const games = {
-        sever: { path:'/severreco', dur:[0,1], vibe:['quick slow burn','relatable'], rating:['G','PG','M','MA'], money:'No' },
-        expedition: { path:'/expeditionreco', dur:[0,1], vibe:['relatable','quick slow burn'], rating:['G','PG','M'], money:'No' },
-        beforeyoureyes: { path:'/beforeyoureyesreco', dur:[1,2], vibe:['sad','relatable'], rating:['G','PG'], money:'Yes' },
-        edith: { path:'/edithfinchreco', dur:[1,2], vibe:['sad','relatable'], rating:['M','MA'], money:'Yes' },
-        firewatch: { path:'/firewatchreco', dur:[2,3], vibe:['character matters','relatable'], rating:['M','MA'], money:'Yes' },
-        omori: { path:'/omorireco', dur:[3], vibe:['sad','relatable'], rating:['MA'], money:'Yes' }
+        sever: {
+            path: '/severreco',
+            dur: [0, 1],
+            vibe: ['quick slow burn', 'relatable'],
+            rating: ['G', 'PG', 'M', 'MA'],
+            money: 'No',
+            interest: ['sit down', 'real life']
+        },
+        expedition: {
+            path: '/expeditionreco',
+            dur: [0, 1],
+            vibe: ['relatable', 'quick slow burn', 'easy'],
+            rating: ['G', 'PG', 'M'],
+            money: 'No',
+            interest: ['easy', 'popular']
+        },
+        beforeyoureyes: {
+            path: '/beforeyoureyesreco',
+            dur: [1],
+            vibe: ['sad', 'relatable', 'reflective'],
+            rating: ['G', 'PG'],
+            money: 'Yes'
+        },
+        edith: {
+            path: '/edithfinchreco',
+            dur: [2],
+            vibe: ['impactful', 'popular', 'relatable', 'story-focused'],
+            rating: ['M', 'MA'],
+            money: 'Yes',
+            interest: ['popular', 'sit down', 'enjoy']
+        },
+        firewatch: {
+            path: '/firewatchreco',
+            dur: [2, 3],
+            vibe: ['character matters', 'relatable', 'calm', 'slow burn', 'story-driven'],
+            rating: ['M', 'MA'],
+            money: 'Yes'
+        },
+        omori: {
+            path: '/omorireco',
+            dur: [3],
+            vibe: ['sad', 'relatable', 'deep', 'psychological', 'emotional'],
+            rating: ['MA'], // 🔒 LOCKED TO MA ONLY
+            money: 'Yes'
+        }
     };
 
+    // === FILTER ===
     let candidates = Object.entries(games).filter(([_, g]) => {
         if (!g.dur.includes(durIdx)) return false;
-        if (!g.vibe.includes(q.vibe)) return false;
+        if (g.vibe && !g.vibe.includes(q.vibe)) return false;
         if (g.money === 'No' && q.money === 'Yes') return false;
         if (g.money === 'Yes' && q.money === 'No') return false;
+        if (g.rating && !g.rating.includes(q.rating)) return false;
+        if (g.interest && !g.interest.includes(q.interest)) return false;
         return true;
     });
 
-    const priority = ['beforeyoureyes','sever','expedition','edith','firewatch','omori'];
-    candidates.sort((a,b)=>priority.indexOf(a[0])-priority.indexOf(b[0]));
+    // === PRIORITY ===
+    const priority = ['edith', 'beforeyoureyes', 'firewatch', 'omori', 'sever', 'expedition'];
+    candidates.sort((a, b) => priority.indexOf(a[0]) - priority.indexOf(b[0]));
 
-    if (candidates.length>0){ window.location.href=candidates[0][1].path; return; }
+    // === REDIRECT ===
+    if (candidates.length > 0) {
+        window.location.href = candidates[0][1].path;
+        return;
+    }
 
-    // Fallbacks
-    if (q.money==='No'){ window.location.href=(q.interest==='easy'||q.interest==='sit down')?'/expeditionreco':'/severreco'; return;}
-    if (durIdx===3){ window.location.href='/omorireco'; return; }
-    if (durIdx>=2){ window.location.href='/firewatchreco'; return; }
-    window.location.href='/edithfinchreco';
+    // === FALLBACKS ===
+    if (q.money === 'No') {
+        if (['easy', 'popular'].includes(q.interest)) window.location.href = '/expeditionreco';
+        else window.location.href = '/severreco';
+        return;
+    }
+
+    if (q.rating === 'MA' && durIdx >= 3) { window.location.href = '/omorireco'; return; }
+    if (durIdx >= 2) { window.location.href = '/edithfinchreco'; return; }
+    window.location.href = '/beforeyoureyesreco';
 }
+
+
 </script>
 </body>
 </html>

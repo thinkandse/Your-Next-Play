@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Next Play – Games List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Your custom CSS after Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <style>
+        .game-banner {
+            width: 100%;
+            height: 200px; /* short but cinematic */
+            overflow: hidden;
+            border-radius: 15px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .game-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* stretch without distortion */
+            filter: brightness(60%);
+        }
+        .game-info-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+            color: white;
+        }
+        .game-title {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .game-buttons .btn {
+            margin-left: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Your Next Play</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="playlist">Play List</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
+                </form>
+                <a href="#" class="me-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                         alt="profile" class="rounded-circle" width="40">
+                </a>
+                <a href="/login">
+                    <button class="btn btn-danger">Log in</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+
+        <h1 class="text-center mb-4">Games List</h1>
+
+        <!-- ========== GAME TEMPLATE (Repeated for all 6 games) ========== -->
+
+        <!-- Before Your Eyes -->
+        <div class="game-banner">
+            <img src="https://tse4.mm.bing.net/th/id/OIP.3ncRaOrJSg0akYNue4rCeQHaEK?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+            <div class="game-info-overlay">
+                <div class="game-title">Before Your Eyes</div>
+                <div class="game-buttons">
+                    <a href="{{ url_for('beforeyoureyes') }}" class="btn btn-outline-light rounded-pill">View Game</a>
+                    <form action="{{ url_for('add_to_playlist', game_id='beforeyoureyes') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger rounded-pill">Add to Play List</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- What Remains of Edith Finch -->
+        <div class="game-banner">
+            <img src="https://primagames.com/wp-content/uploads/2022/08/What-Remains-of-Edith-Finch-Title-resized.jpg" alt="">
+            <div class="game-info-overlay">
+                <div class="game-title">What Remains of Edith Finch</div>
+                <div class="game-buttons">
+                    <a href="{{ url_for('edithfinch') }}" class="btn btn-outline-light rounded-pill">View Game</a>
+                    <form action="{{ url_for('add_to_playlist', game_id='edithfinch') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger rounded-pill">Add to Play List</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Firewatch -->
+        <div class="game-banner">
+            <img src="https://image.api.playstation.com/cdn/EP0144/CUSA04118_00/ggQdzcbimtqao8aHOHFowA8MPW9c6m9k.png" alt="">
+            <div class="game-info-overlay">
+                <div class="game-title">Firewatch</div>
+                <div class="game-buttons">
+                    <a href="{{ url_for('firewatch') }}" class="btn btn-outline-light rounded-pill">View Game</a>
+                    <form action="{{ url_for('add_to_playlist', game_id='firewatch') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger rounded-pill">Add to Play List</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Omori -->
+        <div class="game-banner">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.3x8WxDORJzPJQl8G9BjhYwHaFM?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+            <div class="game-info-overlay">
+                <div class="game-title">Omori</div>
+                <div class="game-buttons">
+                    <a href="{{ url_for('omori') }}" class="btn btn-outline-light rounded-pill">View Game</a>
+                    <form action="{{ url_for('add_to_playlist', game_id='omori') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger rounded-pill">Add to Play List</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expedition -->
+        <div class="game-banner">
+            <img src="https://i.ytimg.com/vi/Ljo4Kq-p2o8/maxresdefault.jpg" alt="">
+            <div class="game-info-overlay">
+                <div class="game-title">Expedition</div>
+                <div class="game-buttons">
+                    <a href="{{ url_for('expedition') }}" class="btn btn-outline-light rounded-pill">View Game</a>
+                    <form action="{{ url_for('add_to_playlist', game_id='expedition') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger rounded-pill">Add to Play List</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sever -->
+        <div class="game-banner">
+            <img src="https://tr.rbxcdn.com/180DAY-7318df159ca3a5c8cee444957a20ef37/768/432/Image/Webp/noFilter" alt="">
+            <div class="game-info-overlay">
+                <div class="game-title">Sever</div>
+                <div class="game-buttons">
+                    <a href="{{ url_for('sever') }}" class="btn btn-outline-light rounded-pill">View Game</a>
+                    <form action="{{ url_for('add_to_playlist', game_id='sever') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger rounded-pill">Add to Play List</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

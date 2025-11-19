@@ -2,9 +2,166 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Your Next Play</title>
+
+    <!-- Bootstrap CSS first -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Your custom CSS after Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+
+    <!-- Added styles for game info layout -->
+    <style>
+        .game-info-box {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .game-info-box img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .game-details {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .game-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-item {
+            margin-bottom: 8px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .title-decor {
+            color: #3349cd;
+        }
+        .section h3 {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+          .game-info-box, .section {
+    color: #000;}
+    </style>
+
 </head>
 <body>
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Your Next Play</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
+                </form>
+                <a href="#" class="me-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                         alt="profile" class="rounded-circle" width="40">
+                </a>
+                <a href="/login">
+                    <button class="btn btn-danger">Log in</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ADDED CONTENT BELOW -->
+    <div class="game-info-box">
+        <img src="https://tse2.mm.bing.net/th/id/OIP.kOGuACCW6CALUPxU9b4zGAHaHa?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Game Cover">
+        <div class="game-details">
+            <div class="title-decor"> <img src="https://images.squarespace-cdn.com/content/v1/6038a78e40d00e39ee97a7a3/1614729868446-VY77GVV0VW8R1KWZJJMD/BYE_logo_black.png" alt="Game Title!"></div>
+            <div class="detail-item"><strong>Age Rating:</strong> PG</div>
+            <div class="detail-item"><strong>Devices:</strong> PC, Mobile</div>
+            <div class="detail-item"><strong>Cost:</strong> $9.99 (not discounted), $1.99 (discounted)</div>
+            <div class="detail-item"><strong>Release Date:</strong> April 8, 2021</div>
+            <div class="detail-item"><strong>Developer:</strong> GoodByeWorld Games</div>
+            <div class="detail-item"><strong>Trailer:</strong> <a href="https://www.youtube.com/watch?v=CP_aKLHxIgI" target="_blank"> Before Your Eyes Trailer (Youtube)</a></div>
+            <div class="detail-item"><strong>More Info:</strong> <a href="https://www.beforeyoureyesgame.com/#about" target="_blank">Website Link</a></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Game Description</h3>
+        <p>Embark on an emotional first-person narrative adventure where you control
+            the story—and affect its outcomes—with your real-life blinks. With this
+            innovative technique you will immerse yourself in a world of memories as your
+            whole life flashes before your eyes.</p>
+    </div>
+
+    <div class="section">
+        <h3>Game Tips</h3>
+        <p>1. Use the blinking feature, not click to blink!!!
+        <br> &emsp;- I genuinely cannot stress this one enough, clicking it works, but it literally takes away all the emotion, using blinking teaches you that you can't
+            &emsp; hold onto every moment in your life, and that it passes. <br><br>
+            2. Steam is the best place to purchase this game <br>
+            &emsp;- I first purchased Before Your Eyes on GOG Galaxy, but after trying to calibrate the blinking, it wouldn't work (due to their missing license for &emsp;
+            Mac), I then got it refunded and purchased it from Steam, which fixed the problem. Steam should be your first choice!
+            <br><br>
+            3. Go into Before Your Eyes blind!<br>
+            &emsp; - The game is short, if you get something spoiled for you, that's on you, so don't read anything about it other than maybe a short description. &emsp; The game is meant to captivate you on the first play, remember that!
+            <br><br>
+            4. Pay attention to the story <br>
+            &emsp; - The tone, atmosphere, and mood of the game sets your whole experience, if you engage enough, you will be rewarded, trust me. I personally <br>&emsp; didn't pay enough attention, and I kinda regret that.
+            <br><br>
+            5. Play in the right setting <br>
+            &emsp; - You can't play in a super dark room, since you need proper lighting to calibrate your blinks, so I suggest a moderately lit room at night, or a <br> &emsp; light next to you to make sure your face is visible for the camera and turn off the room lights. This gives proper emotion for the game.
+            <br><br>
+            6. Don't hold back blinking <br>
+            &emsp; - Using your blinks to move the story forward teaches you that you can't hold onto every moment of life, so respect that about the game.
+        </p>
+    </div>
+
+    <div class="section">
+        <h3>What I love about Before Your Eyes</h3>
+        <p>The choices you make in this game has impact, you probably won't notice it in the first play, but the game
+        has multiple choices for you to make, that alter the story in a subtle way.
+        <br><br>
+        The game is also super emotional, the tone in the game is set to make you cry, don't try to hold that back, I personally
+        didn't cry while playing the game, likely due to me not paying enough attention to the story.</p>
+
+        Last, the story explores the life of the protagonist using blinking, a super creative game choice, you move through their life using blinking which is super cool if you try it.
+    </div>
+    <!-- END OF ADDED CONTENT -->
+<div class="section">
+        <h3>Parents' Guide</h3>
+        <p>Before Your Eyes explores the theme of death, illness, and the afterlife. The game is emotional and I believe it would be a
+            little too confronting for anybody under the age of 13. Blood is also shown in this game (cartoon blood, not real, of course), anyone sensitive to blood, I would advise against playing, though it is fairly mild and not human blood.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 </body>
 </html>

@@ -37,24 +37,26 @@
     body {
         background: #000000;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #111111;
     }
     .login-container {
-        max-width: 350px;
+        max-width: 420px;
         margin: 60px auto;
-        background: #fff0f6;
+        background: #ffffff;
         border-radius: 14px;
-        box-shadow: 0 4px 24px rgba(255, 105, 180, 0.12);
+        box-shadow: 0 6px 24px rgba(16,24,40,0.06);
         padding: 2rem 2.5rem;
         text-align: center;
+        border: 1px solid #ececec;
     }
     h2 {
-        color: #e75480;
+        color: #111111;
         font-size: 1.7rem;
         margin-bottom: 1.2rem;
         font-weight: 700;
     }
     label {
-        color: #e75480;
+        color: #333333;
         font-weight: 600;
         margin-top: 1rem;
         display: block;
@@ -64,33 +66,36 @@
         width: 100%;
         padding: 0.6rem 1rem;
         margin: 0.5rem 0 1rem 0;
-        border: 1px solid #ffb6d5;
+        border: 1px solid #dddddd;
         border-radius: 8px;
         font-size: 1rem;
-        background: #fff;
+        background: #ffffff;
+        color: #111111;
     }
+    input::placeholder { color: #a0a0a0; }
     button {
         padding: 0.6rem 1.5rem;
-        background: #ff69b4;
+        background: #e50914; /* vivid red */
         color: #fff;
         border: none;
         border-radius: 8px;
         font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
-        box-shadow: 0 2px 8px rgba(255, 105, 180, 0.15);
-        transition: background 0.2s;
+        box-shadow: 0 2px 8px rgba(229,9,20,0.12);
+        transition: background 0.15s ease-in-out, transform 0.08s;
     }
     button:hover {
-        background: #e75480;
+        background: #c50b12;
+        transform: translateY(-1px);
     }
     .register-link {
         margin-top: 1.2rem;
-        color: #e75480;
+        color: #555555;
         font-size: 1rem;
     }
     .register-link a {
-        color: #ff69b4;
+        color: #e50914;
         text-decoration: underline;
         font-weight: bold;
     }
@@ -98,10 +103,10 @@
 <div class="login-container">
     <h2>Log in</h2>
     <form method="post">
-        <label>Email</label>
-        <input name="email" type="email" required>
-        <label>Password</label>
-        <input name="password" type="password" required>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required autocomplete="email">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Password" required autocomplete="current-password">
         <button type="submit">Log In</button>
     </form>
     <div class="register-link">
