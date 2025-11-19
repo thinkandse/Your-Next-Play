@@ -22,10 +22,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/quiz">Quiz</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/games">Games List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/playlist">Play List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Games List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Play List</a></li>
                 </ul>
                 <form class="d-flex me-3">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" colour="white">
@@ -40,24 +40,39 @@
             </div>
         </div>
     </nav>
+<br>
+<br>
+<br>
+
+<div class="quiz-rectangle d-flex flex-column align-items-center justify-content-center" id="quizBox">
+    <div class="game-info w-100 d-flex flex-column justify-content-center align-items-center">
+        <div class="w-100 text-center">
+            <span class="d-block w-100 text-center" >Your recommended game is:</span>
+            <p class="w-100 text-center" style="color: #3553ef; font-weight: bold; margin-bottom: 1.2rem; ">Before Your Eyes!</p>
+        </div>
+        <div class="game-img-container d-flex justify-content-center w-100 mb-3">
+            <a href="https://www.beforeyoureyesgame.com/#about" target="_blank" rel="noopener">
+                <img src="https://media.vgm.io/releases/02/22020/22020-1700166122.jpg"
+                     alt="Before Your Eyes"
+                     class="game-image" style="width:150px;height:150px;border-radius:20px;object-fit:cover;display:block;margin:auto;" >
+            </a>
+        </div>
+        <div class="d-flex w-100 justify-content-center mt-4">
+            <div class="d-flex flex-row justify-content-center align-items-center" style="width:290px; gap: 1.2rem;">
+                <form action="{{ url_for('add_to_playlist', game_id='beforeyoureyes') }}" method="POST" style="flex:1; min-width:0;">
+                    <button type="submit" class="btn btn-danger rounded-pill w-100" style="white-space:nowrap;">Add to Play List</button>
+                </form>
+                <a href="{{ url_for('beforeyoureyes') }}" style="flex:1; min-width:0; text-decoration:none;">
+                    <button type="button" class="btn btn-outline-primary rounded-pill w-100" style="white-space:nowrap;">Check Game Info</button>
+                </a>
+            </div>
+        </div>
 
 
-
-    <!-- Bootstrap JS for navbar toggler -->
-    <div style="text-align: center;">
-  <img src="../static/Screenshot 2025-09-12 at 9.15.09 am.png" alt="Centered Image"  height="455" width="536">
+    </div>
 </div>
 
-    <div class="body-content">Hey,<br><br>
-        So, you've stumbled across this website, thanks for coming! I love story games, so I wanted to make a website helping you guys find your next story game.
-        Really, all of these games are ones I have played myself, I have written everything you need to know about the game from game length to playing tips, all from my own experience
-        , spoiler free, though you can always come back to this website and check the spoiler page for the game you played to find things like frequently asked questions, plot, and more.
-        <br><br>
-        So, ready to get immersed in a story? Hope you are, because there will be one ready for you too...
 
-        <br><br>
-        - Your lovely writer
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

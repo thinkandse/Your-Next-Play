@@ -1,12 +1,13 @@
+<!-- fix the paths from quiz ASAP -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Your Next Play</title>
 
-    <!-- Bootstrap CSS first -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- Your custom CSS after Bootstrap -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
@@ -53,85 +54,295 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
 
-    <script>
-    // Start quiz button
-    document.getElementById('startQuizBtn').onclick = function() {
-        document.getElementById('quizBox').innerHTML = `
-           <form id="deviceForm">
-                <p style="color:#e75480;font-weight:bold;">What device can you play on? (Select all that apply)</p>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="device" value="PC" id="devicePC">
-                    <label class="form-check-label" for="devicePC">PC</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="device" value="Mobile" id="deviceMobile">
-                    <label class="form-check-label" for="deviceMobile">Mobile</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="device" value="Console" id="deviceConsole">
-                    <label class="form-check-label" for="deviceConsole">Console</label>
-                </div>
-                <button type="submit" class="btn btn-danger mt-3">Next</button>
-           </form>
-        `;
+<script>
+/*
+  Backend rewrite:
+  - enforces free vs paid split (free => only Sever/Expedition)
+  - Omori: vibe sad OR impactful (vibe value 'sad' or 'relatable')
+  - keeps front-end unchanged
+*/
+
+let quizAnswers = { device: [], duration: '', vibe: '', rating: '', money: '', interest: '' };
+
+// helpers
+function anyOf(arr, allowed) {
+    return arr.some(a => allowed.includes(a));
+}
+function durationIndex(d) {
+    switch (d) {
+        case 'less than 1 hour': return 0;
+        case '1-2 hours': return 1;
+        case '2-4 hours': return 2;
+        case '5 hours or more': return 3;
+        default: return -1;
+    }
+}
+function loadQuestion(html) {
+    document.getElementById('quizBox').innerHTML = html;
+}
+
+// question templates (same UI as before)
+const deviceQuestion = `
+<form id="deviceForm">
+    <p style="color:#e75480;font-weight:bold;">What device can you play on? (Select all that apply)</p>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="PC" id="devicePC">
+        <label class="form-check-label" for="devicePC">PC</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="Mobile" id="deviceMobile">
+        <label class="form-check-label" for="deviceMobile">Mobile</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="device" value="Console" id="deviceConsole">
+        <label class="form-check-label" for="deviceConsole">Console</label></div>
+    <button type="submit" class="btn btn-danger mt-3">Next</button>
+</form>`;
+
+const durationQuestion = `
+<form id="durationForm">
+    <p style="color:#e75480;font-weight:bold;">How long do you want to play for?</p>
+    <div><label><input type="radio" name="duration" value="less than 1 hour" required> Less than 1 hour</label></div>
+    <div><label><input type="radio" name="duration" value="1-2 hours"> 1-2 hours</label></div>
+    <div><label><input type="radio" name="duration" value="2-4 hours"> 2-4 hours</label></div>
+    <div><label><input type="radio" name="duration" value="5 hours or more"> 5 hours or more</label></div>
+    <button type="submit" class="btn btn-danger mt-3">Next</button>
+</form>`;
+
+const vibeQuestion = `
+<form id="vibeForm">
+    <p style="color:#e75480;font-weight:bold;">Which sounds more appealing to you?</p>
+    <div><label><input type="radio" name="vibe" value="quick slow burn" required> A quick but impactful slow burn story</label></div>
+    <div><label><input type="radio" name="vibe" value="sad"> A really sad game to cry about</label></div>
+    <div><label><input type="radio" name="vibe" value="character matters"> A slow burn, character matters!</label></div>
+    <div><label><input type="radio" name="vibe" value="relatable"> An impactful game that's relatable and will be remembered</label></div>
+    <button type="submit" class="btn btn-danger mt-3">Next</button>
+</form>`;
+
+const ratingQuestion = `
+<form id="ratingForm">
+    <p style="color:#e75480;font-weight:bold;">What's the highest age rating you can go?</p>
+    <div><label><input type="radio" name="rating" value="G" required> G</label></div>
+    <div><label><input type="radio" name="rating" value="PG"> PG</label></div>
+    <div><label><input type="radio" name="rating" value="M"> M</label></div>
+    <div><label><input type="radio" name="rating" value="MA"> MA</label></div>
+    <button type="submit" class="btn btn-danger mt-3">Next</button>
+</form>`;
+
+const moneyQuestion = `
+<form id="moneyForm">
+    <p style="color:#e75480;font-weight:bold;">Are you willing to spend money to buy a game?</p>
+    <div><label><input type="radio" name="money" value="Yes" required> Yes</label></div>
+    <div><label><input type="radio" name="money" value="No"> No</label></div>
+    <button type="submit" class="btn btn-danger mt-3">Next</button>
+</form>`;
+
+const interestQuestion = `
+<form id="interestForm">
+    <p style="color:#e75480;font-weight:bold;">What interests you most?</p>
+    <div><label><input type="radio" name="interest" value="real life" required> Using my real-life actions like talking to control the game</label></div>
+    <div><label><input type="radio" name="interest" value="popular"> A really popular game I can talk about</label></div>
+    <div><label><input type="radio" name="interest" value="easy"> An easy-to-follow story</label></div>
+    <div><label><input type="radio" name="interest" value="sit down"> A game where I can sit down and enjoy it</label></div>
+    <button type="submit" class="btn btn-danger mt-3">Finish</button>
+</form>`;
+
+// start quiz
+document.getElementById('startQuizBtn').onclick = function() {
+    loadQuestion(deviceQuestion);
+};
+
+// route between questions and collect answers
+document.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (e.target.id === 'deviceForm') {
+        quizAnswers.device = Array.from(document.querySelectorAll('input[name="device"]:checked')).map(cb => cb.value);
+        if (!quizAnswers.device || quizAnswers.device.length === 0) {
+            alert('Please select at least one device.');
+            return;
+        }
+        loadQuestion(durationQuestion);
+    } else if (e.target.id === 'durationForm') {
+        quizAnswers.duration = document.querySelector('input[name="duration"]:checked').value;
+        loadQuestion(vibeQuestion);
+    } else if (e.target.id === 'vibeForm') {
+        quizAnswers.vibe = document.querySelector('input[name="vibe"]:checked').value;
+        loadQuestion(ratingQuestion);
+    } else if (e.target.id === 'ratingForm') {
+        quizAnswers.rating = document.querySelector('input[name="rating"]:checked').value;
+        loadQuestion(moneyQuestion);
+    } else if (e.target.id === 'moneyForm') {
+        quizAnswers.money = document.querySelector('input[name="money"]:checked').value;
+        loadQuestion(interestQuestion);
+    } else if (e.target.id === 'interestForm') {
+        quizAnswers.interest = document.querySelector('input[name="interest"]:checked').value;
+        decideAndRedirect();
+    }
+});
+
+// Decision engine with strict free/paid split
+function decideAndRedirect() {
+    const q = quizAnswers;
+    const durIdx = durationIndex(q.duration);
+
+    // games definitions — constraints exactly as you specified
+    const games = {
+        sever: {
+            path: '/severreco',
+            devicesAllowed: ['PC','Mobile'],
+            durationMinIdx: 0,
+            vibeAllowed: ['quick slow burn','relatable','character matters'],
+            ratingAllowed: ['G','PG','M','MA'],
+            moneyRequired: 'No',
+            interestExclude: ['popular']
+        },
+        expedition: {
+            path: '/expeditionreco',
+            devicesAllowed: ['PC','Mobile'],
+            durationMinIdx: 0,
+            vibeAllowed: ['relatable','quick slow burn'],
+            ratingAllowed: ['G','PG','M','MA'],
+            moneyRequired: 'No',
+            interestInclude: ['easy','sit down']
+        },
+        edith: {
+            path: '/edithfinchreco',
+            devicesAllowed: ['PC','Mobile','Console'],
+            durationMinIdx: 1, // not less than 1 hour
+            vibeAllowed: ['sad','relatable'],
+            ratingAllowed: ['M','MA'],
+            moneyRequired: 'Yes',
+            interestExclude: ['real life']
+        },
+        firewatch: {
+            path: '/firewatchreco',
+            devicesAllowed: ['PC','Console'],
+            durationMinIdx: 3, // 5+ hours
+            vibeAllowed: ['character matters'],
+            ratingAllowed: ['M','MA'],
+            moneyRequired: 'Yes',
+            interestExclude: ['real life']
+        },
+        omori: {
+            path: '/omorireco',
+            devicesAllowed: ['PC','Console'],
+            durationMinIdx: 3, // 5+ hours
+            vibeAllowed: ['sad','relatable'], // sad OR impactful
+            ratingAllowed: ['MA'],
+            moneyRequired: 'Yes',
+            interestInclude: ['popular','sit down'] // either/or
+        },
+        beforeyoureyes: {
+            path: '/beforeyoureyesreco',
+            devicesAllowed: ['PC','Mobile'],
+            durationMinIdx: 2, // 2+ hours
+            vibeAllowed: ['sad','relatable'],
+            ratingAllowed: ['G','PG'],
+            moneyRequired: 'Yes',
+            interestExclude: ['popular']
+        }
     };
 
-    // Handle form submissions
-    document.addEventListener('submit', function(e) {
-        // Device form
-        if (e.target && e.target.id === 'deviceForm') {
-            e.preventDefault();
-            document.getElementById('quizBox').innerHTML = `
-                <form id="durationForm">
-                    <p style="color:#e75480;font-weight:bold;">How long do you want to play for?</p>
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-6">
-                            <label class="duration-option w-100">
-                                <input type="radio" name="duration" value="less than 1 hour" required>
-                                <span>Less than 1 hour</span>
-                            </label>
-                        </div>
-                        <div class="col-6">
-                            <label class="duration-option w-100">
-                                <input type="radio" name="duration" value="1-2 hours">
-                                <span>1-2 hours</span>
-                            </label>
-                        </div>
-                        <div class="col-6">
-                            <label class="duration-option w-100">
-                                <input type="radio" name="duration" value="2-4 hours">
-                                <span>2-4 hours</span>
-                            </label>
-                        </div>
-                        <div class="col-6">
-                            <label class="duration-option w-100">
-                                <input type="radio" name="duration" value="5 hours or more">
-                                <span>5 hours or more</span>
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-danger mt-4">Finish</button>
-                </form>
-            `;
-        }
-
-        // Duration form -> redirect to result page
-        if (e.target && e.target.id === 'durationForm') {
-            e.preventDefault();
-            const duration = document.querySelector('input[name="duration"]:checked').value;
-
-            // Example redirects — you can change these to real result pages
-            if (duration === "less than 1 hour") {
-                window.location.href = "/result1.html";
-            } else if (duration === "1-2 hours") {
-                window.location.href = "/result2.html";
-            } else if (duration === "2-4 hours") {
-                window.location.href = "/result3.html";
-            } else {
-                window.location.href = "/result4.html";
-            }
+    // If user selected free -> only allow free games (Sever, Expedition)
+    const candidateKeys = Object.keys(games).filter(k => {
+        const g = games[k];
+        if (q.money === 'No') {
+            return g.moneyRequired === 'No';
+        } else {
+            // paid user: allow paid OR free games (but still enforce other constraints)
+            return true;
         }
     });
-    </script>
+
+    // evaluate a game: returns score or -Infinity if fails hard constraints
+    function evaluate(g) {
+        // devices
+        if (!anyOf(q.device, g.devicesAllowed)) return Number.NEGATIVE_INFINITY;
+        // duration
+        if (durIdx < g.durationMinIdx) return Number.NEGATIVE_INFINITY;
+        // vibe
+        if (!g.vibeAllowed.includes(q.vibe)) return Number.NEGATIVE_INFINITY;
+        // rating
+        if (!g.ratingAllowed.includes(q.rating)) return Number.NEGATIVE_INFINITY;
+        // money
+        if (g.moneyRequired && q.money !== g.moneyRequired) return Number.NEGATIVE_INFINITY;
+        // interest exclude
+        if (g.interestExclude && g.interestExclude.includes(q.interest)) return Number.NEGATIVE_INFINITY;
+        // interest include
+        if (g.interestInclude && !g.interestInclude.includes(q.interest)) return Number.NEGATIVE_INFINITY;
+
+        // passed all hard checks — compute simple score to prefer closer matches
+        let score = 0;
+        if (g.interestInclude && g.interestInclude.includes(q.interest)) score += 3;
+        if (g.interestExclude && !g.interestExclude.includes(q.interest)) score += 1;
+        if (g.vibeAllowed.includes(q.vibe)) score += 1;
+        if (g.durationMinIdx === durIdx) score += 1;
+        const allUserDevicesAllowed = q.device.every(d => g.devicesAllowed.includes(d));
+        if (allUserDevicesAllowed) score += 1;
+        return score;
+    }
+
+    // build results
+    const results = [];
+    for (const k of candidateKeys) {
+        const s = evaluate(games[k]);
+        if (s > Number.NEGATIVE_INFINITY) results.push({ key: k, score: s, path: games[k].path });
+    }
+
+    // pick best result if any
+    if (results.length > 0) {
+        results.sort((a,b) => {
+            if (b.score !== a.score) return b.score - a.score;
+            // deterministic priority fallback
+            const priority = ['omori','firewatch','edith','expedition','sever','beforeyoureyes'];
+            return priority.indexOf(a.key) - priority.indexOf(b.key);
+        });
+        window.location.href = results[0].path;
+        return;
+    }
+
+    // No exact match — fallback logic
+
+    // If free user, guarantee Sever or Expedition
+    if (q.money === 'No') {
+        // prefer Expedition when interest = easy or sit down, otherwise Sever
+        if (q.interest === 'easy' || q.interest === 'sit down') {
+            window.location.href = '/expeditionreco';
+        } else {
+            window.location.href = '/severreco';
+        }
+        return;
+    }
+
+    // If paid user, try logical fallbacks in order
+    // 1) Omori (if MA and long & sad/relatable and platform ok)
+    if (q.rating === 'MA' && durIdx >= 3 && (q.vibe === 'sad' || q.vibe === 'relatable') && anyOf(q.device, ['PC','Console'])) {
+        window.location.href = '/omorireco';
+        return;
+    }
+    // 2) Firewatch (long slow burn on PC/Console, M+)
+    if (durIdx >= 3 && q.vibe === 'character matters' && anyOf(q.device, ['PC','Console']) && (q.rating === 'M' || q.rating === 'MA')) {
+        window.location.href = '/firewatchreco';
+        return;
+    }
+    // 3) Edith Finch (if not real-life and rating M/MA or vibe sad/relatable)
+    if (q.interest !== 'real life' && (q.rating === 'M' || q.rating === 'MA' || q.vibe === 'relatable' || q.vibe === 'sad')) {
+        // require duration >= 1
+        if (durIdx >= 1) {
+            window.location.href = '/edithfinchreco';
+            return;
+        }
+    }
+    // 4) Before Your Eyes (PG/G, 2+ hours, real-life interest preferred)
+    if ((q.rating === 'G' || q.rating === 'PG') && durIdx >= 2 && anyOf(q.device, ['PC','Mobile'])) {
+        if (q.interest !== 'popular') {
+            window.location.href = '/beforeyoureyesreco';
+            return;
+        }
+    }
+    // 5) Expedition (paid fallback allowed)
+    if (anyOf(q.device, ['PC','Mobile']) && (q.vibe === 'relatable' || q.vibe === 'quick slow burn')) {
+        window.location.href = '/expeditionreco';
+        return;
+    }
+    // 6) Sever as final fallback
+    window.location.href = '/severreco';
+}
+</script>
 </body>
 </html>

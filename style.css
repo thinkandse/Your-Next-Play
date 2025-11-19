@@ -1,0 +1,106 @@
+@font-face {
+    font-family: 'Patrick Hand';
+    src: url('Fonts/PatrickHand-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Luckymoon';
+    src: url('Fonts/Luckymoon.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Default font for page */
+body {
+    font-family: 'Patrick Hand', sans-serif;
+    background: #141414;
+    color: #fff;
+}
+
+/* Brand title (Your Next Play) stays Patrick Hand */
+.navbar-brand {
+    font-family: 'Patrick Hand', sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: #e50914 !important;
+}
+.navbar-nav {
+    margin-left: 40px;
+    /* Nav links (Home, Quiz, Games List, Play List) → Luckymoon */
+
+    .nav-link {
+        font-family: 'Luckymoon', sans-serif;
+        color: #fff !important;
+        font-size: 1.8rem; /* slightly bigger */
+        margin-right: 20px; /* more spacing */
+        transition: color 0.2s, transform 0.2s;
+        padding-top: 0.8rem; /* increases vertical offset */
+        padding-bottom: 0.1rem;
+    }
+
+    .nav-link:hover {
+        color: #e50914 !important;
+        transform: scale(1.05); /* subtle grow on hover */
+    }
+
+
+    .btn-danger {
+        background-color: #e50914;
+        border: none;
+    }
+
+    .form-control {
+        background: #222;
+        color: #fff;
+        border: 1px solid #333;
+    }
+
+    img.rounded-circle {
+        border: 2px solid #e50914;
+    }
+    .login-container{
+        font-family: 'Patrick Hand', sans-serif;
+    }
+
+    .btn-danger {
+        background-color: #e50914;
+        border: none;
+        padding: 0.6rem 1.5rem; /* bigger button */
+        font-size: 1.1rem; /* larger text */
+        margin-left: 10px; /* spacing from profile image */
+        border-radius: 8px; /* slightly rounder */
+    }
+}
+.duration-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2d1a22;
+    color: #e75480;
+    border-radius: 12px;
+    border: 2px solid #ffb6d5;
+    padding: 1.2rem 0.5rem;
+    font-weight: bold;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: border 0.2s, background 0.2s;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    min-height: 70px;
+    user-select: none;
+}
+.duration-option input[type="radio"] {
+    display: none;
+}
+.duration-option input[type="radio"]:checked + span {
+    background: #ff69b4;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.2rem 0.5rem;
+}
+.duration-option:hover {
+    border: 2px solid #ff69b4;
+}
